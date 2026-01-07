@@ -12,9 +12,9 @@ interface PostDAO {
 
     @Query("""
     SELECT 
-        p.idPost,
+        p.idPost AS postId,
         p.description,
-        p.postImageUri,
+        p.postImageUri AS imageUri,
         p.createdAt,
         u.id AS userId,
         u.name,
@@ -23,7 +23,7 @@ interface PostDAO {
     FROM posts p
     INNER JOIN users u ON p.userId = u.id
     ORDER BY p.createdAt DESC
-""")
+    """)
     suspend fun getAllPosts(): List<PostWithUser>
 
     @Query("SELECT * FROM posts WHERE userId = :userId ORDER BY createdAt DESC")

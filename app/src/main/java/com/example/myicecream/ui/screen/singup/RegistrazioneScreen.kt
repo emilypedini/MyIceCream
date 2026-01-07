@@ -19,7 +19,7 @@ import com.example.myicecream.ui.screen.init.AuthHeader
 
 
 @Composable
-fun RegistrazioneScreen(viewModel: SignUpViewModel) {
+fun RegistrazioneScreen(onSignUpSuccess: () -> Unit, viewModel: SignUpViewModel) {
     val state by viewModel.singupState
 
     var showPassword by remember { mutableStateOf(false) }
@@ -107,7 +107,7 @@ fun RegistrazioneScreen(viewModel: SignUpViewModel) {
 
     LaunchedEffect(state.isRegistered) {
         if (state.isRegistered) {
-            // navController.navigate("login") o home
+            onSignUpSuccess()
         }
     }
 }

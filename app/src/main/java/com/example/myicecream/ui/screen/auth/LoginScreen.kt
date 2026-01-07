@@ -15,7 +15,7 @@ import com.example.myicecream.ui.screen.init.AuthHeader
 
 @Composable
 fun LoginScreen(
-    onRegistratiClick: () -> Unit, viewModel: LoginViewModel
+    onLoginSuccess: () -> Unit, onRegistratiClick: () -> Unit, viewModel: LoginViewModel
 ) {
     val state by viewModel.loginState
 
@@ -57,7 +57,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { /* TODO login */ },
+                onClick = { viewModel.login()},
                 modifier = Modifier.width(200.dp)
             ) { Text("Accedi", fontSize = 18.sp) }
 
@@ -81,7 +81,7 @@ fun LoginScreen(
 
     LaunchedEffect(state.isUserLogged) {
         if (state.isUserLogged) {
-            // navController.navigate("login") o home
+            onLoginSuccess()
         }
     }
 }

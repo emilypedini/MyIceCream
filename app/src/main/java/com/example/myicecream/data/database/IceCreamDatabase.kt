@@ -7,7 +7,8 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [
-        UserEntity::class
+        UserEntity::class,
+        PostEntity::class
     ],
     version = 1
 )

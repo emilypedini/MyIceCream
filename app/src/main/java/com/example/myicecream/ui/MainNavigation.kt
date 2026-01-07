@@ -40,6 +40,11 @@ fun MainNavigation() {
             }
 
             LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
                 onRegistratiClick = {
                     navController.navigate("registrazione")
                 },
@@ -51,7 +56,12 @@ fun MainNavigation() {
             val signUpViewModel = remember {
                 SignUpViewModel(authRepository)
             }
-            RegistrazioneScreen(signUpViewModel)
+            RegistrazioneScreen(onSignUpSuccess = {
+                navController.navigate("main") {
+                    popUpTo("registrazione") { inclusive = true }
+                }
+            },
+            viewModel = signUpViewModel)
         }
 
         composable("main") {
