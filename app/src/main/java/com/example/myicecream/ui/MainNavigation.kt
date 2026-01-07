@@ -14,6 +14,7 @@ import com.example.myicecream.ui.screen.auth.LoginViewModel
 import com.example.myicecream.ui.screen.singup.RegistrazioneScreen
 import com.example.myicecream.ui.screen.init.Avvio
 import com.example.myicecream.ui.screen.singup.SignUpViewModel
+import com.example.myicecream.ui.screen.main.MainScreen
 
 @Composable
 fun MainNavigation() {
@@ -51,6 +52,10 @@ fun MainNavigation() {
                 SignUpViewModel(authRepository)
             }
             RegistrazioneScreen(signUpViewModel)
+        }
+
+        composable("main") {
+            MainScreen()
         }
     }
 }
