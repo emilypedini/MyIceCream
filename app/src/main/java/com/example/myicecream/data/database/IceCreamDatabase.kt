@@ -14,6 +14,7 @@ import androidx.room.RoomDatabase
 abstract class IceCreamDatabase :  RoomDatabase(){
 
     abstract fun userDAO(): UserDAO
+    abstract fun postDAO(): PostDAO
 
     companion object {
         @Volatile
