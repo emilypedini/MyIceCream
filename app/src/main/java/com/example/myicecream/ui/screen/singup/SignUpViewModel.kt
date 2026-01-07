@@ -1,4 +1,4 @@
-package com.example.myicecream.ui.singup
+package com.example.myicecream.ui.screen.singup
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.data.repositories.AuthRepository
-import com.example.myicecream.ui.auth.LoginState
 import kotlinx.coroutines.launch
 
 data class SignUpState(

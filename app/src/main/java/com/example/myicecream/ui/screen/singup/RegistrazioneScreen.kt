@@ -1,4 +1,4 @@
-package com.example.myicecream.ui.auth
+package com.example.myicecream.ui.screen.singup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.example.myicecream.ui.screen.init.AuthHeader
 
 
 @Composable

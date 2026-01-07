@@ -1,4 +1,4 @@
-package com.example.myicecream.ui.auth
+package com.example.myicecream.ui.screen.auth
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

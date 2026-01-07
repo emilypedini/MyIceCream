@@ -1,4 +1,4 @@
-package com.example.myicecream.ui.auth
+package com.example.myicecream.ui.screen.init
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

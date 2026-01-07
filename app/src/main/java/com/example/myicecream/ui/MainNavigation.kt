@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myicecream.ui.auth.LoginScreen
-import com.example.myicecream.ui.auth.RegistrazioneScreen
-import com.example.myicecream.ui.auth.Avvio
+import com.example.myicecream.ui.screen.auth.LoginScreen
+import com.example.myicecream.ui.screen.singup.RegistrazioneScreen
+import com.example.myicecream.ui.screen.init.Avvio
 
 @Composable
 fun MainNavigation() {
