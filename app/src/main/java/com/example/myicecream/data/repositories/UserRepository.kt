@@ -11,4 +11,13 @@ data class UserRepository(private val userDAO: UserDAO) {
     suspend fun updatePassword(id: Int,  password: String) {
         return userDAO.updatePassword(id, password)
     }
+
+    suspend fun updateProfileImage(id: Int, profileImagePath: String) {
+        userDAO.updateProfileImage(id, profileImagePath)
+    }
+
+    suspend fun getUserProfileImage(id: Int): String? {
+        return userDAO.getProfileImageById(id)
+    }
+
 }

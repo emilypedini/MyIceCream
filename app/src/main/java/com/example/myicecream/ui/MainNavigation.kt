@@ -1,12 +1,16 @@
 package com.example.myicecream.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myicecream.data.database.IceCreamDatabase
+import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.data.repositories.AuthRepository
 import com.example.myicecream.ui.screen.auth.LoginScreen
 import com.example.myicecream.ui.screen.auth.LoginViewModel
@@ -15,7 +19,7 @@ import com.example.myicecream.ui.screen.singup.SignUpViewModel
 import com.example.myicecream.ui.screen.init.Avvio
 import com.example.myicecream.ui.screen.main.MainScreen
 import com.example.myicecream.ui.screen.profile.SettingsScreen
-import com.example.myicecream.ui.theme.ThemeViewModel
+import com.example.myicecream.ui.screen.theme.ThemeViewModel
 
 @Composable
 fun MainNavigation(themeViewModel: ThemeViewModel) {
@@ -26,6 +30,8 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
     val db = remember { IceCreamDatabase.getDatabase(context) }
     val authRepository = remember { AuthRepository(db.userDAO()) }
 
+    var loggedUser by remember { mutableStateOf<UserEntity?>(null) }
+
     NavHost(navController = navController, startDestination = "inizio") {
 
         composable("inizio") {
@@ -35,7 +41,8 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
         composable("login") {
             val loginViewModel = remember { LoginViewModel(authRepository) }
             LoginScreen(
-                onLoginSuccess = {
+                onLoginSuccess = { user ->
+                    loggedUser = user
                     navController.navigate("main") { popUpTo("login") { inclusive = true } }
                 },
                 onRegistratiClick = { navController.navigate("registrazione") },
@@ -54,8 +61,15 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
         }
 
         composable("main") {
-            MainScreen(rootNavController = navController, themeViewModel = themeViewModel)
+            loggedUser?.let { user ->
+                MainScreen(
+                    rootNavController = navController,
+                    themeViewModel = themeViewModel,
+                    loggedUser = user
+                )
+            }
         }
+
 
         composable("settings") {
             SettingsScreen(themeViewModel)

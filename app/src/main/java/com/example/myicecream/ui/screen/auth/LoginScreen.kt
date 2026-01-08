@@ -15,11 +15,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.ui.screen.init.AuthHeader
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit, onRegistratiClick: () -> Unit, viewModel: LoginViewModel
+    onLoginSuccess: (UserEntity) -> Unit, onRegistratiClick: () -> Unit, viewModel: LoginViewModel
 ) {
     val state by viewModel.loginState
     var showPassword by remember { mutableStateOf(false) }
@@ -91,8 +92,8 @@ fun LoginScreen(
     }
 
     LaunchedEffect(state.isUserLogged) {
-        if (state.isUserLogged) {
-            onLoginSuccess()
+        if (state.isUserLogged && state.loggedUser != null) {
+            onLoginSuccess(state.loggedUser!!)
         }
     }
 }
