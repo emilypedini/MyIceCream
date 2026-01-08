@@ -44,36 +44,31 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
         _singupState.value = _singupState.value.copy(password = password)
     }
 
-    fun signup() {
+    fun signupAndLogin(onResult: (UserEntity?) -> Unit) {
         val state = _singupState.value
 
-        if(state.name.isBlank() || state.surname.isBlank() ||
-            state.email.isBlank() || state.password.isBlank()) {
-            _singupState.value = state.copy(
-
-                messError = "Compilare tutti i campi obbligatori"
-            )
+        if(state.name.isBlank() || state.surname.isBlank() || state.email.isBlank() || state.password.isBlank()) {
+            _singupState.value = state.copy(messError = "Compilare tutti i campi obbligatori")
+            onResult(null)
             return
         }
 
         if(!state.email.contains("@")){
-            _singupState.value = state.copy(
-                messError = "Email inserita non valida"
-            )
+            _singupState.value = state.copy(messError = "Email inserita non valida")
+            onResult(null)
             return
         }
 
         if(state.password.length < 8){
-            _singupState.value = state.copy(
-                messError = "Password inserita non valida (min 8 caratteri)"
-            )
+            _singupState.value = state.copy(messError = "Password inserita non valida (min 8 caratteri)")
+            onResult(null)
             return
         }
 
         viewModelScope.launch {
             _singupState.value = state.copy(isLoading = true)
 
-            val singUpSuccess = authRepository.signUp(
+            val signUpSuccess = authRepository.signUp(
                 UserEntity(
                     name = state.name,
                     surname = state.surname,
@@ -85,18 +80,16 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
                 )
             )
 
-            _singupState.value = if (singUpSuccess) {
-                state.copy(
-                    isLoading = false,
-                    isRegistered = true,
-                    messError = null
-                )
+            if (signUpSuccess) {
+                val user = authRepository.login(state.email, state.password)
+                _singupState.value = state.copy(isLoading = false, isRegistered = true, messError = null)
+                onResult(user)
             } else {
-                state.copy(
-                    isLoading = false,
-                    messError = "Email già registrata"
-                )
+                _singupState.value = state.copy(isLoading = false, messError = "Email già registrata")
+                onResult(null)
             }
         }
     }
+
+
 }

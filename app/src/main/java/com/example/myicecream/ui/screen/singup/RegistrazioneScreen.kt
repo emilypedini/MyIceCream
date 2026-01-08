@@ -15,11 +15,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.ui.screen.init.AuthHeader
 
 
+
 @Composable
-fun RegistrazioneScreen(onSignUpSuccess: () -> Unit, viewModel: SignUpViewModel) {
+fun RegistrazioneScreen(onSignUpSuccess: (UserEntity) -> Unit, viewModel: SignUpViewModel) {
     val state by viewModel.singupState
 
     var showPassword by remember { mutableStateOf(false) }
@@ -98,17 +100,19 @@ fun RegistrazioneScreen(onSignUpSuccess: () -> Unit, viewModel: SignUpViewModel)
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { viewModel.signup() },
+                onClick = {
+                    viewModel.signupAndLogin { user ->
+                        if (user != null) {
+                            onSignUpSuccess(user)
+                        }
+                    }
+                },
+
                 enabled = !state.isLoading,
                 modifier = Modifier.width(200.dp)
             ) { Text("Registrati", fontSize = 18.sp) }
         }
     }
 
-    LaunchedEffect(state.isRegistered) {
-        if (state.isRegistered) {
-            onSignUpSuccess()
-        }
-    }
 }
 

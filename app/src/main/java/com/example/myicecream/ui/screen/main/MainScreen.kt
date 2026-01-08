@@ -2,7 +2,7 @@ package com.example.myicecream.ui.screen.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -23,7 +23,7 @@ import com.example.myicecream.ui.screen.map.MapViewModel
 import com.example.myicecream.ui.screen.profile.ProfileScreen
 import com.example.myicecream.ui.screen.profile.ProfileViewModel
 import com.example.myicecream.ui.screen.theme.ThemeViewModel
-import com.example.myicecream.ui.theme.ThemeViewModel
+
 import com.example.myicecream.utils.location.LocationService
 
 @Composable
@@ -35,7 +35,6 @@ fun MainScreen(
 
     val navController = rememberNavController()
 
-    // Creiamo ProfileViewModel con l'id dell'utente loggato
     val context = LocalContext.current
     val db = remember { IceCreamDatabase.getDatabase(context) }
     val userRepository = remember { UserRepository(db.userDAO()) }
@@ -61,7 +60,7 @@ fun MainScreen(
 
                 MapScreen(viewModel = mapViewModel)
             }
-            composable(NavBar.Profile.route) { ProfileScreen(rootNavController) }
+
             composable(NavBar.Home.route) {
                 HomeScreen()
             }

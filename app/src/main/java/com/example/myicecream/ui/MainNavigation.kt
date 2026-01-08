@@ -53,7 +53,8 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
         composable("registrazione") {
             val signUpViewModel = remember { SignUpViewModel(authRepository) }
             RegistrazioneScreen(
-                onSignUpSuccess = {
+                onSignUpSuccess = { user ->
+                    loggedUser = user
                     navController.navigate("main") { popUpTo("registrazione") { inclusive = true } }
                 },
                 viewModel = signUpViewModel
