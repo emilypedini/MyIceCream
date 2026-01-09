@@ -1,4 +1,4 @@
-package com.example.myicecream.ui.screen.composable
+package com.example.myicecream.ui.composable
 
 
 

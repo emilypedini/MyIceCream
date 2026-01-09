@@ -17,8 +17,19 @@ class ProfileViewModel(
     private val _profileImageUri = MutableStateFlow<Uri?>(null)
     val profileImageUri = _profileImageUri.asStateFlow()
 
+    private val _name = MutableStateFlow("")
+    val name = _name.asStateFlow()
+
+    private val _surname = MutableStateFlow("")
+    val surname = _surname.asStateFlow()
+
+    private val _email = MutableStateFlow("")
+
+    val email = _email.asStateFlow()
+
     init {
         loadProfileImage()
+        loadUserInfo()
     }
 
     private fun loadProfileImage() {
@@ -36,6 +47,15 @@ class ProfileViewModel(
     private fun saveProfileImage(uri: Uri) {
         viewModelScope.launch {
             userRepository.updateProfileImage(userId, uri.toString())
+        }
+    }
+
+    private fun loadUserInfo() {
+        viewModelScope.launch {
+            val user = userRepository.getUserById(userId)
+            _name.value = user.name
+            _surname.value = user.surname
+            _email.value = user.email
         }
     }
 }

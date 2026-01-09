@@ -16,7 +16,7 @@ import com.example.myicecream.data.database.IceCreamDatabase
 import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.data.repositories.UserRepository
 import com.example.myicecream.ui.composable.ToolBar
-import com.example.myicecream.ui.screen.composable.NavBar
+import com.example.myicecream.ui.composable.NavBar
 import com.example.myicecream.ui.screen.home.HomeScreen
 import com.example.myicecream.ui.screen.map.MapScreen
 import com.example.myicecream.ui.screen.map.MapViewModel

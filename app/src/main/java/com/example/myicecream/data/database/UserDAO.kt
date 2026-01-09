@@ -29,5 +29,8 @@ interface UserDAO {
     @Query("SELECT profileImagePath FROM users WHERE id = :id")
     suspend fun getProfileImageById(id: Int): String?
 
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getUserById(id: Int): UserEntity
+
 
 }

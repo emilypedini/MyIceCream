@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.myicecream.ui.screen.composable.NavBar
+import com.example.myicecream.ui.composable.NavBar
 import androidx.compose.ui.Modifier
 
 @Composable

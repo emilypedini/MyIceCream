@@ -1,6 +1,7 @@
 package com.example.myicecream.data.repositories
 
 import com.example.myicecream.data.database.UserDAO
+import com.example.myicecream.data.database.UserEntity
 
 data class UserRepository(private val userDAO: UserDAO) {
 
@@ -19,5 +20,10 @@ data class UserRepository(private val userDAO: UserDAO) {
     suspend fun getUserProfileImage(id: Int): String? {
         return userDAO.getProfileImageById(id)
     }
+
+    suspend fun getUserById(id: Int) : UserEntity {
+      return userDAO.getUserById(id)
+    }
+
 
 }

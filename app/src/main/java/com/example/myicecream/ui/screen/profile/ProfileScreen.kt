@@ -22,6 +22,10 @@ import androidx.compose.ui.draw.clip
 import coil.compose.AsyncImage
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 import com.example.utils.camera.rememberCameraLauncher
 
@@ -31,6 +35,9 @@ fun ProfileScreen(
     viewModel: ProfileViewModel
 ) {
     val imageUri by viewModel.profileImageUri.collectAsState()
+    val name by viewModel.name.collectAsState()
+    val surname by viewModel.surname.collectAsState()
+    val email by viewModel.email.collectAsState()
 
     val cameraLauncher = rememberCameraLauncher { uri ->
         viewModel.onImageCaptured(uri)
@@ -42,34 +49,47 @@ fun ProfileScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                "Profilo",
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            IconButton(onClick = { navController.navigate("settings") }) {
-                Icon(Icons.Default.Settings, contentDescription = null)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
-            contentAlignment = Alignment.Center
+                .padding(16.dp)
+        ) {
+
+            Text(
+                "Il mio profilo",
+                modifier = Modifier.align(Alignment.Center),
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic,
+                fontSize = 30.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            IconButton(
+                onClick = { navController.navigate("settings") },
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Icon(
+                    Icons.Default.Settings,
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp),
+                    tint = if (MaterialTheme.colorScheme.surface == Color.Black)
+                        Color.White else Color(0xFF5C4638)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 13.dp, start = 30.dp),
+
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
             Box(
                 modifier = Modifier
-                    .size(180.dp)
+                    .size(140.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surface)
                     .clickable { cameraLauncher.captureImage() },
@@ -87,10 +107,26 @@ fun ProfileScreen(
                     Icon(
                         imageVector = Icons.Default.Person,
                         contentDescription = "Aggiungi foto",
-                        modifier = Modifier.size(120.dp),
+                        modifier = Modifier.size(135.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
+            }
+            Spacer(modifier = Modifier.width(24.dp))
+            Column {
+                Text(
+                    text = "$name $surname",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = email,
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }
