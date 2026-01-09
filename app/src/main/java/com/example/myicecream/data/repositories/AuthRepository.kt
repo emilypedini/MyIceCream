@@ -6,13 +6,16 @@ import com.example.myicecream.data.database.UserEntity
 class AuthRepository(private val userDAO: UserDAO) {
 
     suspend fun signUp(user: UserEntity): Boolean {
-        val userExist = userDAO.getUserByEmail(user.email)
-        return if (userExist == null){
-            userDAO.insertUser(user)
-            true
-        }else{
-            false
+        val existingEmail = userDAO.getUserByEmail(user.email)
+        if (existingEmail != null) {
+            throw IllegalArgumentException("EMAIL_EXISTS")
         }
+        val existingNickname = userDAO.getUserByNickaname(user.nickname)
+        if (existingNickname != null) {
+            throw IllegalArgumentException("NICKNAME_EXISTS")
+        }
+        userDAO.insertUser(user)
+        return true
     }
 
     suspend fun login(email: String, password: String): UserEntity? {

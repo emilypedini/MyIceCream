@@ -74,28 +74,46 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
         viewModelScope.launch {
             _singupState.value = state.copy(isLoading = true)
 
-            val signUpSuccess = authRepository.signUp(
-                UserEntity(
-                    name = state.name,
-                    surname = state.surname,
-                    nickname = state.nickname,
-                    email = state.email,
-                    password = state.password,
-                    phone = state.phone,
-                    googleId = null,
-                    profileImagePath = null
+            try {
+                val signUpSuccess = authRepository.signUp(
+                    UserEntity(
+                        name = state.name,
+                        surname = state.surname,
+                        nickname = state.nickname,
+                        email = state.email,
+                        password = state.password,
+                        phone = state.phone,
+                        googleId = null,
+                        profileImagePath = null
+                    )
                 )
-            )
 
-            if (signUpSuccess) {
-                val user = authRepository.login(state.email, state.password)
-                _singupState.value = state.copy(isLoading = false, isRegistered = true, messError = null)
-                onResult(user)
-            } else {
-                _singupState.value = state.copy(isLoading = false, messError = "Email già registrata")
+                if (signUpSuccess) {
+                    val user = authRepository.login(state.email, state.password)
+                    _singupState.value = state.copy(
+                        isLoading = false,
+                        isRegistered = true,
+                        messError = null
+                    )
+                    onResult(user)
+                }
+
+            } catch (e: IllegalArgumentException) {
+
+                val errorMessage = when (e.message) {
+                    "EMAIL_EXISTS" -> "Email già registrata"
+                    "NICKNAME_EXISTS" -> "Nickname già in uso"
+                    else -> "Errore durante la registrazione"
+                }
+
+                _singupState.value = state.copy(
+                    isLoading = false,
+                    messError = errorMessage
+                )
                 onResult(null)
             }
         }
+
     }
 
 }

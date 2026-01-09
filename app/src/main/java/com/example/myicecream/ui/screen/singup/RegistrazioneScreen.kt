@@ -106,6 +106,13 @@ fun RegistrazioneScreen(onSignUpSuccess: (UserEntity) -> Unit, viewModel: SignUp
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            if (state.messError != null) {
+                Text(
+                    text = state.messError!!,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 12.dp) )
+            }
             Button(
                 onClick = {
                     viewModel.signupAndLogin { user ->
