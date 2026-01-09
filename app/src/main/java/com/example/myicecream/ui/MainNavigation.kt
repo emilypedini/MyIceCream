@@ -12,12 +12,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myicecream.data.database.IceCreamDatabase
 import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.data.repositories.AuthRepository
+import com.example.myicecream.data.repositories.UserRepository
 import com.example.myicecream.ui.screen.auth.LoginScreen
 import com.example.myicecream.ui.screen.auth.LoginViewModel
 import com.example.myicecream.ui.screen.singup.RegistrazioneScreen
 import com.example.myicecream.ui.screen.singup.SignUpViewModel
 import com.example.myicecream.ui.screen.init.Avvio
 import com.example.myicecream.ui.screen.main.MainScreen
+import com.example.myicecream.ui.screen.profile.ProfileViewModel
 import com.example.myicecream.ui.screen.profile.SettingsScreen
 import com.example.myicecream.ui.screen.theme.ThemeViewModel
 
@@ -73,7 +75,20 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
 
 
         composable("settings") {
-            SettingsScreen(themeViewModel)
+            loggedUser?.let { user ->
+                val profileViewModel = remember {
+                    ProfileViewModel(
+                        userRepository = UserRepository(db.userDAO()),
+                        userId = user.id
+                    )
+                }
+
+                SettingsScreen(
+                    themeViewModel = themeViewModel,
+                    profileViewModel = profileViewModel
+                )
+            }
         }
+
     }
 }

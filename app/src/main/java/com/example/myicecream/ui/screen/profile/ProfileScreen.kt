@@ -20,14 +20,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import coil.compose.AsyncImage
-import androidx.compose.foundation.clickable
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-
-import com.example.utils.camera.rememberCameraLauncher
 
 @Composable
 fun ProfileScreen(
@@ -38,10 +35,6 @@ fun ProfileScreen(
     val name by viewModel.name.collectAsState()
     val surname by viewModel.surname.collectAsState()
     val email by viewModel.email.collectAsState()
-
-    val cameraLauncher = rememberCameraLauncher { uri ->
-        viewModel.onImageCaptured(uri)
-    }
 
     Column(
         modifier = Modifier
@@ -83,7 +76,6 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 13.dp, start = 30.dp),
-
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -91,8 +83,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .size(140.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surface)
-                    .clickable { cameraLauncher.captureImage() },
+                    .background(MaterialTheme.colorScheme.surface),
                 contentAlignment = Alignment.Center
             ) {
 

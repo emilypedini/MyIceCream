@@ -4,6 +4,7 @@ package com.example.myicecream.ui.screen.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myicecream.data.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +25,6 @@ class ProfileViewModel(
     val surname = _surname.asStateFlow()
 
     private val _email = MutableStateFlow("")
-
     val email = _email.asStateFlow()
 
     init {
@@ -50,12 +50,32 @@ class ProfileViewModel(
         }
     }
 
+    fun resetProfileImage() {
+        viewModelScope.launch {
+            userRepository.updateProfileImage(userId, "")
+            _profileImageUri.value = null
+        }
+    }
+
     private fun loadUserInfo() {
         viewModelScope.launch {
             val user = userRepository.getUserById(userId)
             _name.value = user.name
             _surname.value = user.surname
             _email.value = user.email
+        }
+    }
+
+    fun updateUserInfo(newName: String, newSurname: String){
+        viewModelScope.launch{
+            userRepository.updateUserProfile(
+                id = userId,
+                name = newName,
+                surname = newSurname,
+                profileImagePath = _profileImageUri.value?.toString() ?: ""
+            )
+            _name.value = newName
+            _surname.value = newSurname
         }
     }
 }

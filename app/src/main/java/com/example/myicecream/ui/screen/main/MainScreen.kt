@@ -32,7 +32,6 @@ fun MainScreen(
     themeViewModel: ThemeViewModel,
     loggedUser: UserEntity
 ) {
-
     val navController = rememberNavController()
 
     val context = LocalContext.current
