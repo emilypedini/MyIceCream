@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,9 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.myicecream.ui.screen.notifications.NotificationsViewModel
 
 @Composable
-fun HomeScreen( navController: NavController) {
+fun HomeScreen( navController: NavController,
+                notificationsViewModel: NotificationsViewModel) {
+
+    val unreadCount by notificationsViewModel.unreadNotificationCount.collectAsState()
+
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -32,7 +39,7 @@ fun HomeScreen( navController: NavController) {
                 .padding(16.dp)
         ) {
             Text("Nuvole di Gelato",
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.TopCenter),
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic,
@@ -41,17 +48,11 @@ fun HomeScreen( navController: NavController) {
             )
 
             IconButton(
-                onClick = { navController.navigate("notifications")},
-                modifier = Modifier.align(Alignment.CenterStart)
+                onClick = { navController.navigate("notifications") }
             ) {
-                Icon(
-                    Icons.Default.Send,
-                    contentDescription = null,
-                    modifier = Modifier.size(25.dp),
-                    tint = if (MaterialTheme.colorScheme.surface == Color.Black)
-                        Color.White else Color(0xFF5C4638)
-                )
+                Icon(Icons.Default.Send, contentDescription = null)
             }
+
         }
     }
 }

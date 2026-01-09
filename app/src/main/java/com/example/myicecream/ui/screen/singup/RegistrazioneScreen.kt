@@ -59,6 +59,15 @@ fun RegistrazioneScreen(onSignUpSuccess: (UserEntity) -> Unit, viewModel: SignUp
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
+                value = state.nickname,
+                onValueChange = { viewModel.onNicknameChange(it)},
+                label = { Text("Nickname") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            OutlinedTextField(
                 value = state.phone,
                 onValueChange = { viewModel.onPhoneChange(it)},
                 label = { Text("Telefono") },

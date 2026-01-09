@@ -1,5 +1,6 @@
 package com.example.myicecream.ui.screen.singup
 
+import android.provider.ContactsContract.CommonDataKinds.Nickname
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 data class SignUpState(
     val name: String = "",
     val surname: String = "",
+    val nickname: String = "",
     val phone: String = "",
     val email: String = "",
     val password: String = "",
@@ -44,10 +46,14 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
         _singupState.value = _singupState.value.copy(password = password)
     }
 
+    fun onNicknameChange(nickname: String) {
+        _singupState.value = _singupState.value.copy(nickname = nickname)
+    }
+
     fun signupAndLogin(onResult: (UserEntity?) -> Unit) {
         val state = _singupState.value
 
-        if(state.name.isBlank() || state.surname.isBlank() || state.email.isBlank() || state.password.isBlank()) {
+        if(state.name.isBlank() || state.surname.isBlank() || state.email.isBlank() || state.password.isBlank() || state.nickname.isBlank()) {
             _singupState.value = state.copy(messError = "Compilare tutti i campi obbligatori")
             onResult(null)
             return
@@ -72,6 +78,7 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
                 UserEntity(
                     name = state.name,
                     surname = state.surname,
+                    nickname = state.nickname,
                     email = state.email,
                     password = state.password,
                     phone = state.phone,
@@ -90,6 +97,5 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
             }
         }
     }
-
 
 }

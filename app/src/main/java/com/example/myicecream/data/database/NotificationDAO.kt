@@ -19,4 +19,7 @@ interface NotificationDAO {
 
     @Query("DELETE FROM notifications WHERE idNot = :idNot")
     suspend fun deleteNotification(idNot: Int)
+
+    @Query("SELECT COUNT(*) FROM notifications WHERE userId = :userId AND isRead = 0")
+    fun getUnreadCount(userId: Int): Flow<Int>
 }

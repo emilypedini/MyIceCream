@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.*
 fun NotificationScreen(viewModel: NotificationsViewModel) {
 
     val notifications by viewModel.notifications.collectAsState()
+    val expandedStates by viewModel.expandedNotStates.collectAsState()
 
     LazyColumn {
         items(
@@ -47,8 +48,7 @@ fun NotificationScreen(viewModel: NotificationsViewModel) {
                     ){}
                 }
             ) {
-                val isExpanded =
-                    viewModel.expandedNotStates[noti.idNot] ?: false
+                val isExpanded = expandedStates[noti.idNot] ?: false
 
                 NotificationItem(
                     notification = noti,

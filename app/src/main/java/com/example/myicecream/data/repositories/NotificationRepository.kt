@@ -23,4 +23,8 @@ class NotificationRepository(private val notificationDAO: NotificationDAO) {
     suspend fun deleteNotification(idNot: Int) {
         notificationDAO.deleteNotification(idNot)
     }
+
+    fun getUnreadCount(userId: Int): Flow<Int> {
+        return notificationDAO.getUnreadCount(userId)
+    }
 }

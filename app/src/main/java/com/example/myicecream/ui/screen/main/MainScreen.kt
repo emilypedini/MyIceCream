@@ -12,12 +12,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myicecream.data.database.IceCreamDatabase
 import com.example.myicecream.data.database.UserEntity
+import com.example.myicecream.data.repositories.NotificationRepository
 import com.example.myicecream.data.repositories.UserRepository
 import com.example.myicecream.ui.composable.ToolBar
 import com.example.myicecream.ui.composable.NavBar
 import com.example.myicecream.ui.screen.home.HomeScreen
 import com.example.myicecream.ui.screen.map.MapScreen
 import com.example.myicecream.ui.screen.map.MapViewModel
+import com.example.myicecream.ui.screen.notifications.NotificationsViewModel
 import com.example.myicecream.ui.screen.profile.ProfileScreen
 import com.example.myicecream.ui.screen.profile.ProfileViewModel
 import com.example.myicecream.ui.screen.theme.ThemeViewModel
@@ -40,6 +42,13 @@ fun MainScreen(
         ProfileViewModel(userRepository, userId = loggedUser.id)
     }
 
+    val notificationsViewModel = remember {
+        NotificationsViewModel(
+            notificationRepository = NotificationRepository(db.notificationDAO()),
+            userId = loggedUser.id
+        )
+    }
+
     Scaffold(
         bottomBar = { ToolBar(navController) }
     ) { innerPadding ->
@@ -49,7 +58,8 @@ fun MainScreen(
             startDestination = NavBar.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(NavBar.Home.route) { HomeScreen(navController = rootNavController) }
+            composable(NavBar.Home.route) { HomeScreen(navController = rootNavController,
+                notificationsViewModel = notificationsViewModel) }
             composable(NavBar.Map.route) {
                 val context = LocalContext.current
                 val locationService = remember { LocationService(context) }
@@ -59,7 +69,7 @@ fun MainScreen(
             }
 
             composable(NavBar.Home.route) {
-                HomeScreen(navController = rootNavController)
+                HomeScreen(navController = rootNavController, notificationsViewModel = notificationsViewModel)
             }
 
             composable(NavBar.Profile.route) {
