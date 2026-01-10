@@ -33,7 +33,9 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
     val context = LocalContext.current
 
     val db = remember { IceCreamDatabase.getDatabase(context) }
-    val authRepository = remember { AuthRepository(db.userDAO()) }
+    val authRepository = remember { AuthRepository(db.userDAO(),
+        notificationRepository = NotificationRepository(db.notificationDAO())
+    )}
 
     var loggedUser by remember { mutableStateOf<UserEntity?>(null) }
 

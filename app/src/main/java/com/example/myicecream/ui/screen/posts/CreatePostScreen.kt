@@ -27,9 +27,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.utils.camera.rememberCameraLauncher
 import com.example.utils.camera.rememberGalleryLauncher
@@ -59,7 +61,11 @@ fun CreatePostScreen(
 
         Text(
             text = "Crea un nuovo post",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.primary,
+            fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Italic
         )
 
         Spacer(modifier = Modifier.height(16.dp))

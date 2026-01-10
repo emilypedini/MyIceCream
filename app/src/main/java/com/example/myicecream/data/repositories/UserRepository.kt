@@ -26,5 +26,4 @@ data class UserRepository(private val userDAO: UserDAO) {
       return userDAO.getUserById(id)
     }
 
-
 }
