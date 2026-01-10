@@ -26,5 +26,11 @@ data class UserRepository(private val userDAO: UserDAO) {
       return userDAO.getUserById(id)
     }
 
+    suspend fun isNicknameTaken(nickname: String, userId: Int): Boolean {
+        val user = userDAO.getUserByNickname(nickname)
+        return user != null && user.id != userId
+    }
+
+
 
 }

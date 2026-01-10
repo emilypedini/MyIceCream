@@ -71,18 +71,41 @@ class ProfileViewModel(
         }
     }
 
-    fun updateUserInfo(newName: String, newSurname: String, newNickname: String){
-        viewModelScope.launch{
-            userRepository.updateUserProfile(
+    fun updateUserInfo(
+        newName: String,
+        newSurname: String,
+        newNickname: String,
+        onResult: (Boolean, String) -> Unit
+    ) {
+        viewModelScope.launch {
+
+            val nicknameToSave = newNickname.trim()
+
+            // 🔒 controllo PRIMA
+            val nicknameTaken =
+                userRepository.isNicknameTaken(nicknameToSave, userId)
+
+            if (nicknameTaken) {
+                onResult(false, "Questo nickname è già in uso.")
+                return@launch
+            }
+
+            // 🔒 update sicuro
+            val success = userRepository.updateUserProfile(
                 id = userId,
-                name = newName,
-                surname = newSurname,
-                nickname = newNickname,
-                profileImagePath = _profileImageUri.value?.toString() ?: ""
+                name = newName.trim(),
+                surname = newSurname.trim(),
+                nickname = nicknameToSave,
+                profileImagePath = ""
             )
+
+
+
             _name.value = newName
             _surname.value = newSurname
-            _nickname.value = newNickname
+            _nickname.value = nicknameToSave
+
+            onResult(true, "Profilo aggiornato")
         }
     }
 
