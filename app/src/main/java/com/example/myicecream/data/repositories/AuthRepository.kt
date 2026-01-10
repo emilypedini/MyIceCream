@@ -11,7 +11,7 @@ class AuthRepository(private val userDAO: UserDAO,
         if (existingEmail != null) {
             throw IllegalArgumentException("EMAIL_EXISTS")
         }
-        val existingNickname = userDAO.getUserByNickaname(user.nickname)
+        val existingNickname = userDAO.getUserByNickname(user.nickname)
         if (existingNickname != null) {
             throw IllegalArgumentException("NICKNAME_EXISTS")
         }

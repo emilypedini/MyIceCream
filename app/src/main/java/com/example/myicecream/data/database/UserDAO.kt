@@ -36,5 +36,7 @@ interface UserDAO {
     suspend fun getName(userId: Int): String
 
     @Query("SELECT * FROM users WHERE nickname = :nickname LIMIT 1")
-    suspend fun getUserByNickaname(nickname: String): UserEntity?
+    suspend fun getUserByNickname(nickname: String): UserEntity?
+
+
 }
