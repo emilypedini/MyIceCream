@@ -32,17 +32,20 @@ fun SettingsScreen(
     val imageUri by profileViewModel.profileImageUri.collectAsState()
     val name by profileViewModel.name.collectAsState()
     val surname by profileViewModel.surname.collectAsState()
+    val nickname by profileViewModel.nickname.collectAsState()
 
     var newName by remember { mutableStateOf(name) }
     var newSurname by remember { mutableStateOf(surname) }
+    var newNickname by remember { mutableStateOf(nickname) }
 
     val cameraLauncher = rememberCameraLauncher { uri ->
         profileViewModel.onImageCaptured(uri)
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(name, surname, nickname) {
         newName= name
         newSurname = surname
+        newNickname = nickname
     }
 
     val galleryLauncher = rememberGalleryLauncher { uri ->
@@ -154,6 +157,16 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        TextField(
+            value = newNickname,
+            onValueChange = { newNickname = it },
+            label = { Text("Nickname") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -172,7 +185,7 @@ fun SettingsScreen(
 
         Button(
             onClick = {
-                if(newName.isBlank() || newSurname.isBlank()){
+                if(newName.isBlank() || newSurname.isBlank() || newNickname.isBlank()){
                     popUpError = true
                 } else{
                     popUpSave = true
@@ -212,7 +225,7 @@ fun SettingsScreen(
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            profileViewModel.updateUserInfo(newName,newSurname)
+                            profileViewModel.updateUserInfo(newName,newSurname,newNickname)
                             popUpSave = false
                             navController.popBackStack()
                         }
@@ -295,7 +308,6 @@ fun SettingsScreen(
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            // Validazioni
                             if (newPwd != confirmPwd) {
                                 errorMessage = "Le nuove password non combaciano."
                                 return@TextButton
@@ -328,8 +340,6 @@ fun SettingsScreen(
                 }
             )
         }
-
-
 
     }
 

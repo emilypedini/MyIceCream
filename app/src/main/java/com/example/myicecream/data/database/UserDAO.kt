@@ -17,8 +17,8 @@ interface UserDAO {
     @Query("SELECT * FROM users WHERE email = :email AND password = :password")
     suspend fun loginUser(email: String, password: String): UserEntity?
 
-    @Query("""UPDATE users SET name = :name,surname = :surname, profileImagePath = :profileImagePath  WHERE id = :userId""")
-    suspend fun updateUserName(userId: Int, name: String, surname: String, profileImagePath: String)
+    @Query("""UPDATE users SET name = :name,surname = :surname, nickname = :nickname, profileImagePath = :profileImagePath  WHERE id = :userId""")
+    suspend fun updateUserName(userId: Int, name: String, surname: String, nickname: String, profileImagePath: String)
 
     @Query("""UPDATE users SET password = :password WHERE id = :userId""")
     suspend fun updatePassword(userId: Int, password: String)

@@ -33,7 +33,7 @@ fun ProfileScreen(
     val imageUri by viewModel.profileImageUri.collectAsState()
     val name by viewModel.name.collectAsState()
     val surname by viewModel.surname.collectAsState()
-    val email by viewModel.email.collectAsState()
+    val nickname by viewModel.nickname.collectAsState()
 
     Column(
         modifier = Modifier
@@ -105,7 +105,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.width(24.dp))
             Column {
                 Text(
-                    text = "$name $surname",
+                    text = nickname,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary
@@ -113,7 +113,7 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = email,
+                    text = "$name $surname",
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.primary
                 )

@@ -2,6 +2,7 @@
 package com.example.myicecream.ui.screen.profile
 
 import android.net.Uri
+import android.provider.ContactsContract.CommonDataKinds.Nickname
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +27,9 @@ class ProfileViewModel(
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
+
+    private val _nickname = MutableStateFlow("")
+    val nickname = _nickname.asStateFlow()
 
     init {
         loadProfileImage()
@@ -63,19 +67,22 @@ class ProfileViewModel(
             _name.value = user.name
             _surname.value = user.surname
             _email.value = user.email
+            _nickname.value = user.nickname
         }
     }
 
-    fun updateUserInfo(newName: String, newSurname: String){
+    fun updateUserInfo(newName: String, newSurname: String, newNickname: String){
         viewModelScope.launch{
             userRepository.updateUserProfile(
                 id = userId,
                 name = newName,
                 surname = newSurname,
+                nickname = newNickname,
                 profileImagePath = _profileImageUri.value?.toString() ?: ""
             )
             _name.value = newName
             _surname.value = newSurname
+            _nickname.value = newNickname
         }
     }
 

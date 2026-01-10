@@ -1,12 +1,13 @@
 package com.example.myicecream.data.repositories
 
+import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.example.myicecream.data.database.UserDAO
 import com.example.myicecream.data.database.UserEntity
 
 data class UserRepository(private val userDAO: UserDAO) {
 
-    suspend fun updateUserProfile(id: Int, name: String, surname: String, profileImagePath: String) {
-        return userDAO.updateUserName(id, name, surname, profileImagePath)
+    suspend fun updateUserProfile(id: Int, name: String, surname: String, nickname: String, profileImagePath: String) {
+        return userDAO.updateUserName(id, name, surname, nickname, profileImagePath)
     }
 
     suspend fun updatePassword(id: Int,  password: String) {
