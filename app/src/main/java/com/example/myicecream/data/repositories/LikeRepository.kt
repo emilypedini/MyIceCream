@@ -3,6 +3,7 @@ package com.example.myicecream.data.repositories
 import com.example.myicecream.data.database.LikeDAO
 import com.example.myicecream.data.database.LikeEntity
 import com.example.myicecream.data.database.PostDAO
+import com.example.myicecream.data.database.PostWithUser
 import com.example.myicecream.data.database.UserDAO
 
 class LikeRepository(private val likeDAO: LikeDAO,
@@ -25,5 +26,17 @@ class LikeRepository(private val likeDAO: LikeDAO,
                 message = "$likerName ha messo mi piace a un tuo post"
             )
         }
+    }
+
+    suspend fun removeLike(userId: Int, postId: Int) {
+        likeDAO.removeLike(userId, postId)
+    }
+
+    suspend fun isPostLiked(userId: Int, postId: Int): Boolean {
+        return likeDAO.isPostLiked(userId, postId)
+    }
+
+    suspend fun getFavoritePosts(userId: Int): List<PostWithUser> {
+        return likeDAO.getFavoritePosts(userId)
     }
 }

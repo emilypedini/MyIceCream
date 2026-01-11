@@ -35,4 +35,22 @@ interface PostDAO {
 
     @Query("SELECT userId FROM posts WHERE idPost = :postId")
     suspend fun getPostOwner(postId: Int): Int
+
+    @Query("""
+    SELECT
+        posts.idPost AS postId,
+        posts.description AS description,
+        posts.postImageUri AS imageUri,
+        posts.createdAt AS createdAt,
+        posts.userId AS userId,
+        users.nickname AS nickname,
+        users.name AS name,
+        users.surname AS surname,
+        users.profileImagePath AS profileImagePath
+    FROM posts
+    INNER JOIN users ON posts.userId = users.id
+    WHERE posts.idPost = :postId
+""")
+    suspend fun getPostWithUserById(postId: Int): PostWithUser?
+
 }

@@ -43,4 +43,8 @@ class PostRepository(private val postDAO: PostDAO, private val notificationDAO: 
             message = "Nuvole di Gelato ha pubblicato un nuovo post, corri a vederlo!!"
         ))
     }
+
+    suspend fun getSinglePostWithUserById(postId: Int): PostWithUser? {
+        return postDAO.getPostWithUserById(postId)
+    }
 }

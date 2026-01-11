@@ -96,16 +96,6 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
             }
         }
 
-        composable("notifications") {
-            loggedUser?.let { user ->
-                val notificationsViewModel = remember {
-                    NotificationsViewModel(
-                        notificationRepository = NotificationRepository(db.notificationDAO()),
-                        userId = user.id
-                    )
-                }
-                NotificationScreen(viewModel = notificationsViewModel)
-            }
-        }
+
     }
 }
