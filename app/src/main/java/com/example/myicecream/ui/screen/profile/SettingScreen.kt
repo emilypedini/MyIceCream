@@ -60,6 +60,11 @@ fun SettingsScreen(
     var popUpPwd by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
+    var currentPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+    var confirmNewPassword by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -186,11 +191,14 @@ fun SettingsScreen(
 
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Tema scuro")
+                    Text(text="Tema scuro", color = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.weight(1f))
                     Switch(
-                        checked = themeViewModel.isDarkTheme.value,
-                        onCheckedChange = { themeViewModel.setDarkTheme(it) }
+                        checked = profileViewModel.isDarkTheme.collectAsState().value,
+                        onCheckedChange = { isChecked ->
+                            profileViewModel.setDarkTheme(isChecked)
+                            themeViewModel.setDarkTheme(isChecked)
+                        }
                     )
                 }
             }
@@ -283,6 +291,89 @@ fun SettingsScreen(
             },
             dismissButton = {
                 TextButton(onClick = { popUpSave = false }) {
+                    Text("Annulla")
+                }
+            }
+        )
+    }
+
+    if (popUpPwd) {
+        AlertDialog(
+            onDismissRequest = {
+                popUpPwd = false
+                passwordError = null
+            },
+            title = { Text("Modifica password") },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = currentPassword,
+                        onValueChange = { currentPassword = it },
+                        label = { Text("Password attuale") },
+                        singleLine = true
+                    )
+
+                    Spacer(Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = newPassword,
+                        onValueChange = { newPassword = it },
+                        label = { Text("Nuova password") },
+                        singleLine = true
+                    )
+
+                    Spacer(Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = confirmNewPassword,
+                        onValueChange = { confirmNewPassword = it },
+                        label = { Text("Conferma nuova password") },
+                        singleLine = true
+                    )
+
+                    if (passwordError != null) {
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = passwordError!!,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    when {
+                        newPassword.isBlank() || confirmNewPassword.isBlank() -> {
+                            passwordError = "Compila tutti i campi"
+                        }
+                        newPassword != confirmNewPassword -> {
+                            passwordError = "Le nuove password non coincidono"
+                        }
+                        else -> {
+                            profileViewModel.changePassword(
+                                currentPassword,
+                                newPassword
+                            ) { success, message ->
+                                passwordError = if (!success) message else null
+                                if (success) {
+                                    popUpPwd = false
+                                    currentPassword = ""
+                                    newPassword = ""
+                                    confirmNewPassword = ""
+                                }
+                            }
+                        }
+                    }
+                }) {
+                    Text("Conferma")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    popUpPwd = false
+                    passwordError = null
+                }) {
                     Text("Annulla")
                 }
             }

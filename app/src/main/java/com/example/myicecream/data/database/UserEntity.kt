@@ -26,6 +26,8 @@ data class UserEntity(
 
     val googleId: String?,
 
-    val profileImagePath: String?
+    val profileImagePath: String?,
+
+    val screenTheme: Boolean
 )
 

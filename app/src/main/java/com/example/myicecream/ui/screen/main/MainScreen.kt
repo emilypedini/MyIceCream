@@ -161,6 +161,11 @@ fun MainScreen(
                     },
                     onSettingsClick = {
                         rootNavController.navigate("settings")
+                    },
+                    onLogout = {
+                        rootNavController.navigate("login") {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
                 )
             }

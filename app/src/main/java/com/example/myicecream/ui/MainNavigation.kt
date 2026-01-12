@@ -51,6 +51,7 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
             LoginScreen(
                 onLoginSuccess = { user ->
                     loggedUser = user
+                    themeViewModel.setDarkTheme(user.screenTheme)
                     navController.navigate("main") { popUpTo("login") { inclusive = true } }
                 },
                 onRegistratiClick = { navController.navigate("registrazione") },

@@ -1,8 +1,13 @@
 package com.example.myicecream.ui.screen.profile
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+
+
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -18,12 +23,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
@@ -32,10 +43,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(
     onPostClick: (Int) -> Unit,
     onSettingsClick: () ->Unit,
+    onLogout: () -> Unit,
     viewModel: ProfileViewModel
 ) {
     val imageUri by viewModel.profileImageUri.collectAsState()
@@ -43,6 +56,7 @@ fun ProfileScreen(
     val surname by viewModel.surname.collectAsState()
     val nickname by viewModel.nickname.collectAsState()
     val userPosts by viewModel.userPosts.collectAsState()
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadUserPosts()
@@ -80,6 +94,17 @@ fun ProfileScreen(
                     modifier = Modifier.size(25.dp),
                     tint = if (MaterialTheme.colorScheme.surface == Color.Black)
                         Color.White else Color(0xFF5C4638)
+                )
+            }
+
+            IconButton(
+                onClick = { showLogoutDialog = true },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Logout,
+                    contentDescription = "Logout",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -148,17 +173,77 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxSize().padding(top = 8.dp),
             contentPadding = PaddingValues(4.dp)
         ) {
-            items(userPosts) { post->
-                Image(
-                    painter = rememberAsyncImagePainter(post.imageUri),
-                    contentDescription = null,
-                    modifier = Modifier.padding(4.dp).fillMaxWidth()
-                        .height(180.dp).clickable {
-                            onPostClick(post.postId)
-                        },
-                    contentScale = ContentScale.Crop
-                )
+            items(userPosts) { post ->
+                var showDeleteDialog by remember { mutableStateOf(false) }
+
+                Box {
+                    Image(
+                        painter = rememberAsyncImagePainter(post.imageUri),
+                        contentDescription = null,
+                        modifier = Modifier.padding(4.dp).fillMaxWidth()
+                            .height(180.dp).combinedClickable(
+                                onClick = {
+                                    onPostClick(post.postId)
+                                },
+                                onLongClick = {
+                                    showDeleteDialog = true
+                                }
+                            ),
+                        contentScale = ContentScale.Crop
+                    )
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDeleteDialog = false },
+                            title = { Text("Elimina Post") },
+                            text = { Text("Sei sicuro di voler eliminare questo post?") },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        viewModel.deletePost(post.postId) { success ->
+
+                                        }
+                                        showDeleteDialog = false
+                                    }
+                                ) {
+                                    Text("Elimina")
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = { showDeleteDialog = false }) {
+                                    Text("Annulla")
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
     }
+
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            title = { Text("Disconnessione") },
+            text = { Text("Vuoi veramente disconnetterti?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showLogoutDialog = false
+                        onLogout()
+                    }
+                ) {
+                    Text("Sì")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showLogoutDialog = false }
+                ) {
+                    Text("No")
+                }
+            }
+        )
+    }
+
 }

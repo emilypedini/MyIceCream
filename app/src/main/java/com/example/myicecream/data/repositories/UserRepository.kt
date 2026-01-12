@@ -6,8 +6,8 @@ import com.example.myicecream.data.database.UserEntity
 
 data class UserRepository(private val userDAO: UserDAO) {
 
-    suspend fun updateUserProfile(id: Int, name: String, surname: String, nickname: String, profileImagePath: String) {
-        return userDAO.updateUserName(id, name, surname, nickname, profileImagePath)
+    suspend fun updateUserProfile(id: Int, name: String, surname: String, nickname: String, profileImagePath: String, screenTheme: Boolean) {
+        return userDAO.updateUserName(id, name, surname, nickname, profileImagePath, screenTheme)
     }
 
     suspend fun updatePassword(id: Int,  password: String) {
@@ -31,6 +31,8 @@ data class UserRepository(private val userDAO: UserDAO) {
         return user != null && user.id != userId
     }
 
-
-
+    suspend fun getUserTheme(userId: Int): Boolean {
+        val user = getUserById(userId)
+        return user.screenTheme
+    }
 }

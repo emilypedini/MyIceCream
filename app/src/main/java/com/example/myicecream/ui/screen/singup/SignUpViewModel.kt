@@ -94,7 +94,8 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
                         password = state.password,
                         phone = state.phone,
                         googleId = null,
-                        profileImagePath = null
+                        profileImagePath = null,
+                        screenTheme = false
                     )
                 )
 

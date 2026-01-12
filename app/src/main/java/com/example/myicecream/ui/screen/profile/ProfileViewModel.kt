@@ -35,6 +35,9 @@ class ProfileViewModel(
     private val _userPosts = MutableStateFlow<List<PostWithUser>>(emptyList())
     val userPosts = _userPosts.asStateFlow()
 
+    private val _isDarkTheme = MutableStateFlow(false)
+    val isDarkTheme = _isDarkTheme.asStateFlow()
+
     init {
         loadProfileImage()
         loadUserInfo()
@@ -73,6 +76,7 @@ class ProfileViewModel(
             _surname.value = user.surname
             _email.value = user.email
             _nickname.value = user.nickname
+            _isDarkTheme.value = user.screenTheme
         }
     }
 
@@ -86,22 +90,20 @@ class ProfileViewModel(
 
             val nicknameToSave = newNickname.trim()
 
-            // 🔒 controllo PRIMA
-            val nicknameTaken =
-                userRepository.isNicknameTaken(nicknameToSave, userId)
+            val nicknameTaken = userRepository.isNicknameTaken(nicknameToSave, userId)
 
             if (nicknameTaken) {
                 onResult(false, "Questo nickname è già in uso.")
                 return@launch
             }
 
-            // 🔒 update sicuro
             val success = userRepository.updateUserProfile(
                 id = userId,
                 name = newName.trim(),
                 surname = newSurname.trim(),
                 nickname = nicknameToSave,
-                profileImagePath = ""
+                profileImagePath = _profileImageUri.value?.toString() ?: "",
+                screenTheme = _isDarkTheme.value
             )
 
 
@@ -134,6 +136,20 @@ class ProfileViewModel(
         viewModelScope.launch {
             _userPosts.value = postRepository.getPostsByUser(userId)
         }
+    }
+
+    fun deletePost(postId: Int, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val success = postRepository.deletePost(postId)
+            if(success) {
+                loadUserPosts()
+            }
+            onResult(success)
+        }
+    }
+
+    fun setDarkTheme(isDark: Boolean) {
+        _isDarkTheme.value = isDark
     }
 
 }
