@@ -96,22 +96,6 @@ fun MapScreen(viewModel: MapViewModel) {
                     mapView.overlays.add(userMarker)
                     mapView.controller.setCenter(userMarker.position)
                 }
-
-                selectedShop?.let { shop -> userCoordinates?.let { user ->
-                        val line = Polyline()
-                        line.setPoints(
-                            listOf(
-                                GeoPoint(user.latitude, user.longitude),
-                                GeoPoint(shop.latitude, shop.longitude)
-                            )
-                        )
-                        line.outlinePaint.color = android.graphics.Color.BLUE
-                        line.outlinePaint.strokeWidth = 8f
-
-                        mapView.overlays.add(line)
-                        mapView.invalidate()
-                    }
-                }
             }
         )
 
