@@ -1,7 +1,5 @@
 package com.example.myicecream.data.database
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
-
 data class PostWithUser(
     val postId: Int,
     val description: String,

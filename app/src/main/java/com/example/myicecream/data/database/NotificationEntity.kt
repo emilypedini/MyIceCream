@@ -1,9 +1,7 @@
 package com.example.myicecream.data.database
 
-import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.w3c.dom.Attr
 
 @Entity(tableName = "notifications")
 data class NotificationEntity(

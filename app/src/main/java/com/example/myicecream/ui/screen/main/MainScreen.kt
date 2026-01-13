@@ -38,6 +38,10 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.myicecream.ui.screen.posts.PostDetailScreen
 import com.example.myicecream.ui.screen.posts.PostDetailViewModel
+import com.example.myicecream.ui.screen.search.PublicProfileScreen
+import com.example.myicecream.ui.screen.search.PublicProfileViewModel
+import com.example.myicecream.ui.screen.search.SearchScreen
+import com.example.myicecream.ui.screen.search.SearchViewModel
 
 import com.example.myicecream.utils.location.LocationService
 
@@ -116,6 +120,12 @@ fun MainScreen(
         )
     }
 
+    val searchViewModel = remember {
+        SearchViewModel(
+            userRepository = userRepository
+        )
+    }
+
     Scaffold(
         topBar = {
             if(showTopBar) {
@@ -170,6 +180,14 @@ fun MainScreen(
                 )
             }
 
+            composable(NavBar.Search.route) {
+                SearchScreen(
+                    viewModel = searchViewModel,
+                    onUserClick = { userId ->
+                        navController.navigate("publicProfile/$userId")
+                    }
+                )
+            }
 
             composable(NavBar.Add.route) {
                 CreatePostScreen(
@@ -198,7 +216,7 @@ fun MainScreen(
 
                 val postId = backStackEntry.arguments!!.getInt("postId")
 
-                val postDetailViewModel = remember {
+                val postDetailViewModel = remember(postId) {
                     PostDetailViewModel(
                         postRepository = PostRepository(db.postDAO(), db.notificationDAO()),
                         likeRepository = likeRepository,
@@ -208,6 +226,26 @@ fun MainScreen(
                 }
 
                 PostDetailScreen(postDetailViewModel)
+            }
+
+            composable(
+                route = "publicProfile/{userId}",
+                arguments = listOf(navArgument("userId") {type = NavType.IntType})
+            ) {backStackEntry ->
+                val userId = backStackEntry.arguments!!.getInt("userId")
+
+                val publicProfileViewModel = remember(userId) {
+                    PublicProfileViewModel(
+                        userRepository = userRepository,
+                        postRepository = postRepository,
+                        userId =userId
+                    )
+                }
+                PublicProfileScreen(publicProfileViewModel,
+                    onPostClick = {postId ->
+                        navController.navigate("postDetail/$postId")
+                    }
+                )
             }
         }
     }

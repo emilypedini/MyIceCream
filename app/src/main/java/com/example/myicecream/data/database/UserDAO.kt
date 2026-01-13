@@ -1,6 +1,5 @@
 package com.example.myicecream.data.database
 
-import android.adservices.adid.AdId
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -43,5 +42,12 @@ interface UserDAO {
 
     @Query("SELECT * FROM users WHERE nickname = :nickname LIMIT 1")
     suspend fun getUserByNickname(nickname: String): UserEntity?
+
+    @Query("""
+    SELECT * FROM users 
+    WHERE nickname LIKE '%' || :query || '%' 
+    LIMIT 20
+""")
+    suspend fun searchUsersByNickname(query: String): List<UserEntity>
 
 }

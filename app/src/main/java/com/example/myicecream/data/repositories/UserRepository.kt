@@ -1,6 +1,5 @@
 package com.example.myicecream.data.repositories
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.example.myicecream.data.database.UserDAO
 import com.example.myicecream.data.database.UserEntity
 
@@ -34,5 +33,10 @@ data class UserRepository(private val userDAO: UserDAO) {
     suspend fun getUserTheme(userId: Int): Boolean {
         val user = getUserById(userId)
         return user.screenTheme
+    }
+
+    suspend fun searchUsersByNickname(query: String): List<UserEntity> {
+        if (query.isBlank()) return emptyList()
+        return userDAO.searchUsersByNickname(query)
     }
 }
