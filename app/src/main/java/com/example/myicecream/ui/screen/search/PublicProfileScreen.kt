@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -94,6 +95,7 @@ fun PublicProfileScreen (
                         contentDescription = "Aggiungi foto",
                         modifier = Modifier.size(135.dp),
                         tint = MaterialTheme.colorScheme.primary
+
                     )
                 }
             }

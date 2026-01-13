@@ -118,6 +118,14 @@ fun PostDetailContent(
             modifier = Modifier.padding(top = 4.dp)
         )
 
+        post.position?.let { pos ->
+            Text(
+                text = "Prodotto comprato: $pos",
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(vertical = 2.dp)
+            )
+        }
+
         Text(
             buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {

@@ -41,12 +41,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import com.example.utils.camera.saveImageToStorage
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatePostScreen(
     navController: NavController,
@@ -178,62 +186,48 @@ fun CreatePostScreen(
             }
 
             item {
-                Column {
-                    Text(
-                        text = "Dove lo hai comprato? (opzionale)",
-                        style = MaterialTheme.typography.labelMedium
+                var expanded by remember { mutableStateOf(false) }
 
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = {expanded = !expanded}
+                ) {
+                    OutlinedTextField(
+                        value = selectedPosition ?: "",
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Dove lo hai comprato? (opzionale)")},
+                        placeholder = { Text("Seleziona una gelateria")},
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                        },
+                        modifier = Modifier.menuAnchor().fillMaxWidth()
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    shops.forEach { shop ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                                .clip(RoundedCornerShape(8.dp)).background(
-                                    if(selectedPosition == shop)
-                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-                                    else Color.Transparent
-                                )
-                                .padding(8.dp)
-                        ) {
-                            Text(
-                                text = shop,
-                                modifier = Modifier.weight(1f)
-                            )
-
-                            Button(
-                                onClick = {
-                                    postViewModel.onPositionSelected(shop)
-                                }
-                            ) {
-                                Text("Seleziona")
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = {expanded = false}
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Nessuna posizione")},
+                            onClick = {postViewModel.onPositionSelected(null)
+                            expanded = false
                             }
-                        }
-                    }
-
-                    if (selectedPosition != null) {
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Button(
-                            onClick = {
-                                postViewModel.onPositionSelected(null)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Rimuovi posizione")
-                        }
-                    }
-
-                    if(selectedPosition != null) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Selezionato $selectedPosition",
-                            color = MaterialTheme.colorScheme.primary
                         )
+
+                        shops.forEach{ shop ->
+                            DropdownMenuItem(
+                                text = { Text(shop)},
+                                onClick = { postViewModel.onPositionSelected(shop)
+                                expanded = false}
+                            )
+                        }
                     }
                 }
+            }
+
+            item{
+                Spacer(modifier = Modifier.height(24.dp))
             }
 
             item{
@@ -247,7 +241,6 @@ fun CreatePostScreen(
                                     "Post pubblicato!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                navController.popBackStack()
                             },
                             onError = {
                                 Toast.makeText(

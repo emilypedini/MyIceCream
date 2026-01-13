@@ -4,6 +4,7 @@ data class PostWithUser(
     val postId: Int,
     val description: String,
     val imageUri: String,
+    val position: String?,
     val createdAt: Long,
 
     val userId: Int,

@@ -55,6 +55,7 @@ class PostViewModel(
             if(success) {
                 _imageUri.value = null
                 _description.value = ""
+                _position.value = null
                 onSuccess()
             } else {
                 onError()

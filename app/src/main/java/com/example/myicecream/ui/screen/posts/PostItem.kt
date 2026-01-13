@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Person
@@ -82,7 +83,11 @@ fun PostItem(post: PostWithUser, homeViewModel: HomeViewModel) {
         Image(
             painter = rememberAsyncImagePainter(post.imageUri),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth().height(300.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             contentScale = ContentScale.Crop
         )
 
@@ -112,5 +117,13 @@ fun PostItem(post: PostWithUser, homeViewModel: HomeViewModel) {
                 append(post.description) },
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         )
+
+        post.position?.let { pos ->
+            Text(
+                text = "Prodotto comprato: $pos",
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+            )
+        }
     }
 }
