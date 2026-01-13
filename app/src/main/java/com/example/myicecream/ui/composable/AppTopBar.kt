@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -25,10 +26,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 
 @Composable
 fun AppTopBar(title: String, innerNavController: NavController) {
+
+    val navBackStackEntry by innerNavController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
@@ -57,7 +62,10 @@ fun AppTopBar(title: String, innerNavController: NavController) {
             ) {
                 Icon(
                     Icons.Default.Send, contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = if (currentRoute == "notifications")
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -67,7 +75,10 @@ fun AppTopBar(title: String, innerNavController: NavController) {
             ) {
                 Icon(
                     Icons.Default.FavoriteBorder, contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = if (currentRoute == "favorites")
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
