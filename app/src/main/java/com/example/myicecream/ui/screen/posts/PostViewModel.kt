@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myicecream.data.database.PostEntity
 import com.example.myicecream.data.repositories.PostRepository
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,6 +20,9 @@ class PostViewModel(
     private val _description = MutableStateFlow("")
     val description = _description.asStateFlow()
 
+    private val _position = MutableStateFlow<String?>(null)
+    val position = _position.asStateFlow()
+
     fun onImageSelect(uri: String) {
         _imageUri.value = uri
     }
@@ -27,19 +31,25 @@ class PostViewModel(
         _description.value = text
     }
 
+    fun onPositionSelected(shopName: String?) {
+        _position.value = shopName
+    }
+
     fun createPost(
         onSuccess: () -> Unit,
         onError: () -> Unit
     ) {
         val image = imageUri.value ?: return
         val descr = description.value
+        val pos = position.value
 
         viewModelScope.launch {
             val success = postRepository.createNewPost(
                 PostEntity(
                     userId = userId,
                     postImageUri = image,
-                    description = descr
+                    description = descr,
+                    position = pos
                 )
             )
             if(success) {

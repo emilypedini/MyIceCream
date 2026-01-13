@@ -62,6 +62,15 @@ fun CreatePostScreen(
         postViewModel.onImageSelect(uri.toString())
     }
 
+    val selectedPosition by postViewModel.position.collectAsState()
+    val shops = listOf(
+        "Nuvole di Gelato - Fossombrone",
+        "Nuvole di Gelato - Calcinelli",
+        "Nuvole di Gelato - Fano",
+        "Nuvole di Gelato - Rimini",
+        "Nuvole di Gelato - Cesena"
+    )
+
     val context = LocalContext.current
 
     Column(
@@ -163,6 +172,65 @@ fun CreatePostScreen(
                 Spacer(modifier = Modifier.height(24.dp))
             }
 
+            item {
+                Column {
+                    Text(
+                        text = "Dove lo hai comprato? (opzionale)",
+                        style = MaterialTheme.typography.labelMedium
+
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    shops.forEach { shop ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+                                .clip(RoundedCornerShape(8.dp)).background(
+                                    if(selectedPosition == shop)
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                                    else Color.Transparent
+                                )
+                                .padding(8.dp)
+                        ) {
+                            Text(
+                                text = shop,
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            Button(
+                                onClick = {
+                                    postViewModel.onPositionSelected(shop)
+                                }
+                            ) {
+                                Text("Seleziona")
+                            }
+                        }
+                    }
+
+                    if (selectedPosition != null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        Button(
+                            onClick = {
+                                postViewModel.onPositionSelected(null)
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Rimuovi posizione")
+                        }
+                    }
+
+                    if(selectedPosition != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Selezionato $selectedPosition",
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
+
             item{
 
                 Button(
@@ -192,23 +260,5 @@ fun CreatePostScreen(
             }
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
