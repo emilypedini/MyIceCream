@@ -26,9 +26,6 @@ class MapViewModel(private val locationService: LocationService) : ViewModel(){
     private val _uiMapState = MutableStateFlow(MapUiState())
     val uiMapState = _uiMapState.asStateFlow()
 
-    private val _selectedShop = MutableStateFlow<ShopLocation?>(null)
-    val selectedShop = _selectedShop.asStateFlow()
-
     fun userLocation() {
         viewModelScope.launch {
             _uiMapState.value = MapUiState(isLoading = true)
@@ -58,7 +55,4 @@ class MapViewModel(private val locationService: LocationService) : ViewModel(){
         }
     }
 
-    fun onShopSelected(shop: ShopLocation){
-        _selectedShop.value = shop
-    }
 }

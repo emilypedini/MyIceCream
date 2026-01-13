@@ -56,9 +56,7 @@ fun MainScreen(
     val context = LocalContext.current
     val db = remember { IceCreamDatabase.getDatabase(context) }
     val userRepository = remember { UserRepository(db.userDAO()) }
-    val postRepository = remember { PostRepository(
-        db.postDAO(), db.notificationDAO()
-    ) }
+    val postRepository = remember { PostRepository(db.postDAO()) }
 
     val profileViewModel = remember {
         ProfileViewModel(userRepository, postRepository, userId = loggedUser.id)
@@ -82,7 +80,7 @@ fun MainScreen(
 
     val homeViewModel = remember {
         HomeViewModel(
-            postRepository = PostRepository(db.postDAO(), db.notificationDAO()),
+            postRepository = PostRepository(db.postDAO()),
             likeRepository = likeRepository,
             likeDAO = db.likeDAO(),
             loggedUserId = loggedUser.id
@@ -91,7 +89,7 @@ fun MainScreen(
 
     val postViewModel = remember {
         PostViewModel(
-            postRepository = PostRepository(db.postDAO(), db.notificationDAO()),
+            postRepository = PostRepository(db.postDAO()),
             userId = loggedUser.id
         )
     }
@@ -220,7 +218,7 @@ fun MainScreen(
 
                 val postDetailViewModel = remember(postId) {
                     PostDetailViewModel(
-                        postRepository = PostRepository(db.postDAO(), db.notificationDAO()),
+                        postRepository = PostRepository(db.postDAO()),
                         likeRepository = likeRepository,
                         loggedUserId = loggedUser.id,
                         postId = postId

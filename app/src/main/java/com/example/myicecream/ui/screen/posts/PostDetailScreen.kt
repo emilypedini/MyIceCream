@@ -3,8 +3,6 @@ package com.example.myicecream.ui.screen.posts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.example.myicecream.ui.screen.posts.PostDetailContent
-
 
 @Composable
 fun PostDetailScreen(

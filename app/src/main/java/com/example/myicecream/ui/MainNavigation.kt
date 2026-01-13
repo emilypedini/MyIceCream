@@ -21,8 +21,6 @@ import com.example.myicecream.ui.screen.singup.RegistrazioneScreen
 import com.example.myicecream.ui.screen.singup.SignUpViewModel
 import com.example.myicecream.ui.screen.init.Avvio
 import com.example.myicecream.ui.screen.main.MainScreen
-import com.example.myicecream.ui.screen.notifications.NotificationScreen
-import com.example.myicecream.ui.screen.notifications.NotificationsViewModel
 import com.example.myicecream.ui.screen.profile.ProfileViewModel
 import com.example.myicecream.ui.screen.profile.SettingsScreen
 import com.example.myicecream.ui.screen.theme.ThemeViewModel
@@ -87,7 +85,7 @@ fun MainNavigation(themeViewModel: ThemeViewModel) {
                 val profileViewModel = remember {
                     ProfileViewModel(
                         userRepository = UserRepository(db.userDAO()),
-                        postRepository = PostRepository(db.postDAO(), db.notificationDAO()),
+                        postRepository = PostRepository(db.postDAO()),
                         userId = user.id
                     )
                 }

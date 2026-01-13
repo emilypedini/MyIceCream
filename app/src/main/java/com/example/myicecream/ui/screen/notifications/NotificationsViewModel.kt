@@ -23,11 +23,6 @@ class NotificationsViewModel(private val notificationRepository: NotificationRep
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
 
-    val unreadNotificationCount = notificationRepository.getUnreadCount(userId)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(),
-            0)
-
-
     fun onNotificationClick(notification: NotificationEntity) {
         val current = _expandedNotStates.value[notification.idNot] ?: false
 

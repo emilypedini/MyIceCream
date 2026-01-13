@@ -1,6 +1,5 @@
 package com.example.myicecream.ui.screen.singup
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -126,5 +125,4 @@ class SignUpViewModel( private val authRepository: AuthRepository) : ViewModel()
         }
 
     }
-
 }

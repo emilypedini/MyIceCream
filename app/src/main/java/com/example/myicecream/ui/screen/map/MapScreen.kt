@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import android.Manifest
 import androidx.core.content.ContextCompat
 import com.example.myicecream.utils.location.rememberMultiplePermissions
-import org.osmdroid.views.overlay.Polyline
 
 @Composable
 fun MapScreen(viewModel: MapViewModel) {
@@ -33,8 +32,6 @@ fun MapScreen(viewModel: MapViewModel) {
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
     )) { }
-
-    val selectedShop by viewModel.selectedShop.collectAsState()
 
     LaunchedEffect(Unit) {
         if (permissionHandler.statuses.values.all { it.isGranted }) {
@@ -62,7 +59,6 @@ fun MapScreen(viewModel: MapViewModel) {
 
                     controller.setZoom(15.0)
 
-                    // Centro iniziale (prima gelateria)
                     val startPoint = GeoPoint(
                         viewModel.iceCreamShops.first().latitude,
                         viewModel.iceCreamShops.first().longitude
@@ -74,11 +70,6 @@ fun MapScreen(viewModel: MapViewModel) {
                         marker.position = GeoPoint(shop.latitude, shop.longitude)
                         marker.title = shop.name
                         overlays.add(marker)
-                        //marker.setOnMarkerClickListener{
-                          //      clickedMarker, mapView ->
-                            //viewModel.onShopSelected(shop)
-                            //true
-                        //}
                     }
                 }
             },

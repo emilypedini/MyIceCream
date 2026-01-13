@@ -24,7 +24,7 @@ class AuthRepository(private val userDAO: UserDAO,
             title = "Benvenuto \uD83D\uDD14",
             message = "${user.name}, ti diamo il nostro caloroso benvenuto." +
                     "Rimani con noi per scoprire in anteprima le novità." +
-                    " Nuovle di Gelato."
+                    " Nuvole di Gelato."
         )
 
         return true

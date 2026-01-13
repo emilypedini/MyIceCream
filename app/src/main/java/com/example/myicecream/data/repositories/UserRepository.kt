@@ -30,11 +30,6 @@ data class UserRepository(private val userDAO: UserDAO) {
         return user != null && user.id != userId
     }
 
-    suspend fun getUserTheme(userId: Int): Boolean {
-        val user = getUserById(userId)
-        return user.screenTheme
-    }
-
     suspend fun searchUsersByNickname(query: String): List<UserEntity> {
         if (query.isBlank()) return emptyList()
         return userDAO.searchUsersByNickname(query)

@@ -2,7 +2,6 @@ package com.example.myicecream.ui.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myicecream.data.database.PostWithUser
 import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.data.repositories.PostRepository
