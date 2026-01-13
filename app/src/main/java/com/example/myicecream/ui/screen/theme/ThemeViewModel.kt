@@ -9,4 +9,8 @@ class ThemeViewModel : ViewModel() {
     fun setDarkTheme(dark: Boolean) {
         isDarkTheme.value = dark
     }
+
+    fun resetTheme() {
+        isDarkTheme.value = false
+    }
 }

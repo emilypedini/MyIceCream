@@ -16,15 +16,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myicecream.data.database.UserEntity
 import com.example.myicecream.ui.screen.init.AuthHeader
+import com.example.myicecream.ui.screen.theme.ThemeViewModel
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: (UserEntity) -> Unit,
     onRegistratiClick: () -> Unit,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    themeViewModel: ThemeViewModel
 ) {
     val state by viewModel.loginState
     var showPassword by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        themeViewModel.resetTheme()
+    }
 
     Column(
         modifier = Modifier
@@ -85,6 +91,15 @@ fun LoginScreen(
                 modifier = Modifier.width(200.dp)
             ) {
                 Text("Accedi", fontSize = 18.sp)
+            }
+            state.messageError?.let { error ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = error,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 14.sp,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))

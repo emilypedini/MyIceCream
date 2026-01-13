@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.example.myicecream.ui.screen.theme.ThemeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -43,7 +44,8 @@ fun ProfileScreen(
     onPostClick: (Int) -> Unit,
     onSettingsClick: () ->Unit,
     onLogout: () -> Unit,
-    viewModel: ProfileViewModel
+    viewModel: ProfileViewModel,
+    themeViewModel: ThemeViewModel
 ) {
     val imageUri by viewModel.profileImageUri.collectAsState()
     val name by viewModel.name.collectAsState()
@@ -224,6 +226,7 @@ fun ProfileScreen(
                 Button(
                     onClick = {
                         showLogoutDialog = false
+                        themeViewModel.resetTheme()
                         onLogout()
                     }
                 ) {
